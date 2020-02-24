@@ -1,0 +1,3 @@
+@MyParentObject
+public class MyChildObject {
+}

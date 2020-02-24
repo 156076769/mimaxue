@@ -1,0 +1,29 @@
+https://rietta.com/blog/openssl-generating-rsa-key-from-command/
+
+openssl genrsa -des3 -out private.pem 2048
+
+openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+
+openssl rsa -in private.pem -out private_unencrypted.pem -outform PEM
+
+openssl rsa -pubin -in public.pem -text -noout
+
+echo 'Hi Alice! Please bring something for dinner!' |
+openssl rsautl -encrypt -pubin -inkey public.pem >message.encrypted
+
+openssl base64 -in message.encrypted -out message.encrypted.base64
+
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in private_unencrypted.pem -out private_unencrypted.pkcs8 -nocrypt
+
+
+prime1: p
+prime2: q
+modulus: N = p * q
+publicExponent: e
+privateExponent: d
+
+exponent1 = dp
+exponent2 = dq
+coefficient = qInv
+
+d mod (p-1) (exponent1),  d mod (q-1) (exponent2) and q-1 mod p (coefficient).
